@@ -1,0 +1,6 @@
+options:
+    --src
+    ./option_rc_test.dat
+    --doc
+    ./option_rc_test
+    --singlefile

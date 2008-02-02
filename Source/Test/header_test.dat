@@ -1,0 +1,137 @@
+/****m* Muppets/Header_1
+ *
+ * NAME
+ *   testmark 1 testmark
+ * NAME
+CTest testmark 1000 testmark   This should not appear
+ *   test
+ * PURPOSE
+ *   test
+ * SEE ALSO
+ *   Puppet::walk
+ ******
+ */
+
+
+/****c* Muppets/Header_2 [1.0]
+ *
+ *
+ * NAME
+ *   testmark 2 testmark
+ * NAME
+;*Test testmark 1001 testmark  This should not appear
+ * SEE ALSO
+ *   Puppet::talk
+ *****
+ */
+
+
+#****f* T_1_/Header_3
+# NAME
+#   testmark 3 testmark
+# SOURCE
+
+tcl ()
+
+#***
+
+
+
+|****v* T_2_/Header_4
+| NAME
+|   testmark 4 testmark
+| SOURCE
+
+assembler ()
+
+|****
+
+
+//****d* T_3_/Header_5
+// NAME
+//   testmark 5 testmark
+// SOURCE
+
+c++ ()
+
+//****
+
+
+--****h* T_4_/Header_6
+-- NAME
+--   testmark 6 testmark
+-- SOURCE
+
+occam ()
+
+--***
+
+
+<!--****f* T_5_/Header_7
+* NAME
+*    testmark 7 testmark
+*
+* SOURCE
+
+html ()
+
+<!--****-->
+
+
+
+REM ****f* T_6_/Header_8
+REM NAME
+REM    testmark 8 testmark
+REM ***
+
+
+
+Rem ****f* T_7_/Header_9
+Rem NAME
+Rem    testmark 9 testmark
+Rem ***
+
+
+#****f* T_7_/Header_10
+# NAME
+#   testmark 10 testmark
+#***
+
+
+%****f* T_11_/Header_11
+% NAME
+%   testmark 11 testmark
+%***
+
+
+(****f* T_12_/Header_12
+* NAME
+*   testmark 12 testmark
+****)
+
+'****f* T_13_/Header_13
+'* NAME
+'* testmark 13 testmark
+'*****
+
+!!****f* T_14_/Header_14
+!! NAME
+!! MYSUB
+!! NOTES
+!! testmark 14 testmark
+!! SOURCE
+!!
+
+USE MYMODULE
+IMPLICIT NONE
+END IF
+
+!!******
+
+.****f* T_15_/Header_15
+.* NAME
+.*    testmark 15 testmark
+.* NOTES
+.*    no notes
+.****
+

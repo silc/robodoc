@@ -1,0 +1,182 @@
+#****h* ROBODoc/Makefile.bcc
+# NAME
+#   Makefile.bcc -- Makefile for Borland C++ Compiler 5.5
+#   Adapted from Makefile.plain
+#
+# SYNOPSIS
+#   make -f makefile.bcc robodoc
+# PURPOSE
+#   The following targets are the most useful for the user.
+#   robodoc -  makes the robodc executable.
+#
+#****
+#
+# $Id: makefile.bcc,v 1.7 2007/05/04 13:31:31 petterik Exp $
+#
+
+SHELL = /bin/sh
+.SUFFIXES:
+.SUFFIXES: .c .obj
+
+#--------------------------------------
+
+CC = bcc32
+CFLAGS = -DRB_BCC -DIGNORE_CASE_FILENAMES
+LIBS=
+
+#
+#
+#
+
+BROWSER=netscape
+ROBODOC=./robodoc
+ETAGS=/usr/bin/etags
+EGREP=/bin/egrep
+RM=/bin/rm
+VERS=4.99.1
+RELEASE=1
+
+#--------------------------------------
+# sources for the robodoc executable
+#--------------------------------------
+
+# BCC -e filename.exe wouldn't work
+# so list robodoc.c first to ensure correct .exe name
+#
+
+SOURCES = analyser.c \
+          ascii_generator.c \
+          directory.c \
+          generator.c \
+          document.c \
+          globals.c \
+          headers.c \
+          headertypes.c \
+          html_generator.c \
+          items.c \
+          links.c \
+          file.c \
+          latex_generator.c \
+          part.c \
+          path.c \
+          roboconfig.c \
+          robodoc.c \
+          rtf_generator.c \
+          sgmldocbook_generator.c \
+          test_generator.c \
+          troff_generator.c \
+          util.c \
+          xmldocbook_generator.c
+
+HEADERS= analyser.h \
+         ascii_generator.h \
+         directory.h \
+         dirwalk.h \
+         document.h \
+         file.h \
+         generator.h \
+         globals.h \
+         headers.h \
+          headertypes.h \
+         html_generator.h \
+         items.h \
+         latex_generator.h \
+         links.h \
+         part.h \
+         path.h \
+         roboconfig.h \
+         robodoc.h \
+         rtf_generator.h \
+         sgmldocbook_generator.h \
+         test_generator.h \
+         troff_generator.h \
+         unittest.h \
+         util.h \
+         xmldocbook_generator.h
+
+OBJECTS= robodoc.obj \
+         analyser.obj \
+         ascii_generator.obj \
+         directory.obj \
+         generator.obj \
+         document.obj \
+         globals.obj \
+         headers.obj \
+         headertypes.obj \
+         html_generator.obj \
+         items.obj \
+         links.obj \
+         file.obj \
+         latex_generator.obj \
+         part.obj \
+         path.obj \
+         roboconfig.obj \
+         rtf_generator.obj \
+         sgmldocbook_generator.obj \
+         test_generator.obj \
+         troff_generator.obj \
+         util.obj \
+         xmldocbook_generator.obj
+
+#****e* Makefile.bcc/robodoc
+# NAME
+#   robodoc --
+# NOTE
+#   This assumes that you version of make knows how to make an .obj file
+#   out of an .c file.
+# SOURCE
+#
+
+robodoc : $(OBJECTS) 
+	$(CC) $(OBJECTS) $(LIBS)
+
+#****
+#------------------------------
+# Construction of the makefile
+#------------------------------
+
+depend :
+	makedepend -Y"" -f makefile.bcc $(SOURCES) $(HEADERS)
+
+depend2:
+	$(CC) -MM $(SOURCES)
+
+# DO NOT DELETE
+
+analyser.o : robodoc.h globals.h headers.h items.h util.h links.h \
+  analyser.h document.h file.h path.h part.h 
+ascii_generator.o : ascii_generator.h headers.h util.h robodoc.h globals.h \
+  items.h generator.h document.h 
+directory.o : robodoc.h directory.h file.h path.h 
+generator.o : globals.h robodoc.h headers.h items.h util.h links.h \
+  generator.h document.h part.h file.h path.h roboconfig.h \
+  html_generator.h latex_generator.h sgmldocbook_generator.h \
+  rtf_generator.h troff_generator.h ascii_generator.h analyser.h 
+document.o : robodoc.h document.h part.h path.h directory.h file.h \
+  headers.h links.h util.h generator.h 
+globals.o : robodoc.h globals.h headers.h util.h 
+headers.o : robodoc.h headers.h 
+headertypes.o : robodoc.h headertypes.h 
+html_generator.o : html_generator.h headers.h util.h globals.h robodoc.h \
+  links.h generator.h document.h items.h 
+items.o : globals.h robodoc.h items.h roboconfig.h 
+links.o : globals.h robodoc.h headers.h util.h links.h 
+file.o : file.h path.h headers.h util.h 
+latex_generator.o : generator.h robodoc.h headers.h document.h util.h \
+  links.h latex_generator.h globals.h 
+part.o : headers.h file.h path.h part.h util.h 
+path.o : path.h robodoc.h headers.h util.h 
+roboconfig.o : util.h roboconfig.h 
+robodoc.o : robodoc.h globals.h headers.h items.h util.h links.h \
+  part.h analyser.h document.h generator.h directory.h file.h path.h \
+  roboconfig.h 
+rtf_generator.o : rtf_generator.h headers.h util.h robodoc.h globals.h \
+  generator.h document.h items.h 
+sgmldocbook_generator.o : sgmldocbook_generator.h headers.h util.h \
+  robodoc.h globals.h links.h generator.h document.h items.h 
+test_generator.o : test_generator.h globals.h util.h
+troff_generator.o : troff_generator.h headers.h util.h robodoc.h items.h \
+  generator.h document.h 
+util.o : robodoc.h globals.h links.h headers.h items.h util.h 
+xmldocbook_generator.o : xmldocbook_generator.h globals.h util.h 
+

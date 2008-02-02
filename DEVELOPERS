@@ -1,0 +1,46 @@
+$Id: DEVELOPERS,v 1.10 2006/06/17 11:35:10 gumpu Exp $
+
+If you get this from CVS, this is how to create a workable archive. 
+Run:
+  aclocal
+  automake -a
+  autoconf
+
+
+To create a new release edit 
+  bump.pl
+and then run it. Then run
+  ./do.sh
+
+
+To clean _everything_
+
+  make -f makefile.am myclean
+
+
+To create the (g)zipfiles:
+  ./configure
+  make dist
+  make dist-zip
+
+
+To check for memory leaks use:
+   CFLAGS="-g -Wall -DDMALLOC -DMALLOC_FUNC_CHECK" LDFLAGS="-ldmalloc" ./configure
+in combination with the dmalloc library ( http://dmalloc.com/ )
+
+
+To cross-compile Windows binary on GNU/Linux, do:
+
+  (cd Source && make -f makefile.plain xcompile)
+
+This requires mingw32 cross-compiler. On Debian GNU/Linux (and on its
+derivatives) this can be installed simply by typing:
+
+  apt-get update && apt-get install mingw32
+
+
+There are three modules for ROBODoc
+robo        -- The source code and documentation
+robotest    -- A test suite   ( OBSOLETE )
+robowwww    -- The web pages for ROBODoc.  ( OBSOLETE )
+

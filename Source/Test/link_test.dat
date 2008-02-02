@@ -1,0 +1,83 @@
+/****f* LinkTest/link_1_
+ * NAME
+ *   link_1_
+ ******/
+
+
+/****f* _LinkTest_/_link_2_
+ * NAME
+ *   _link_2_
+ ******/
+
+
+/****f* LinkTest/link3
+ * NAME
+ *   link3
+ ******/
+
+
+/****f* LinkTest/-link4
+ * NAME
+ *   -link4
+ ******/
+
+/****f* LinkTest/Llink5
+ * NAME
+ *   Llink5
+ ******/
+
+
+/****f* LinkTest/thelinks1
+ * NAME
+ *   thelink
+ * SEE ALSO
+ *   A link at the end of the line link_1_.
+ *   A link as function link_1_(test).
+ *   link_1_ as the begin of a sentence.
+ *   A comma sentence link_1_, this is.
+ *****/
+
+
+/****f* LinkTest/thelinks2
+ * NAME
+ *   thelink
+ * SEE ALSO
+ *   A link at the end of the line _link_2_.
+ *   A link as function _link_2_(test).
+ *   _link_2_ as the begin of a sentence.
+ *   A comma sentence _link_2_, this is.
+ *****/
+
+
+/****f* LinkTest/thelinks3
+ * NAME
+ *   thelink
+ * SEE ALSO
+ *   A link at the end of the line link3.
+ *   A link as function link3(test).
+ *   link3 as the begin of a sentence.
+ *   A comma sentence link3, this is.
+ *****/
+
+
+/****f* LinkTest/thelinks4
+ * NAME
+ *   thelink
+ * SEE ALSO
+ *   A link at the end of the line -link4.
+ *   A link as function -link4(test).
+ *   -link4 as the begin of a sentence.
+ *   A comma sentence -link4, this is.
+ *****/
+
+/****f* LinkTest/thelinks5
+ * NAME
+ *   thelink
+ * SEE ALSO
+ *   A link at the end of the line Llink5.
+ *   A link as function Llink5(test).
+ *   Llink5 as the begin of a sentence.
+ *   A comma sentence Llink5, this is.
+ *****/
+
+

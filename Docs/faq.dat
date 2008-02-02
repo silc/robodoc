@@ -1,0 +1,73 @@
+<!-- vi:ft=html
+-->
+
+<c>General
+<q>What problem does ROBODoc solve?
+<a>TODO
+
+<c>General
+<q>What is the target audience for ROBODoc?
+<a>TODO
+
+<c>General
+<q>What are the possible uses for ROBODoc?
+<a>TODO
+
+<c>General
+<q>On what platforms foes ROBODoc run?
+<a>Win32, Unix, GNU/Linux, and Mac. But it probably works on
+other OS-es that have a C compiler too.
+
+<c>General
+<q>What programming languages are supported?
+<a>TODO
+
+<c>General
+<q>What human languages are supported?
+<a>TODO
+
+<c>General
+<q>Where can I download ROBODoc?
+<a>TODO
+
+<c>General
+<q>Are there other similar tools that are better?
+<a>TODO
+
+<!-- Theory --!>
+
+<c>Theory
+<q>What are headers
+<a>TODO
+
+<c>Theory
+<q>What are headertypes
+<a>TODO
+
+<c>Theory
+<q>What are items
+<a>TODO
+
+<c>Theory 
+<q>Do item names need to be all captitals?
+<a>No. They can be anything you like, but they
+can not be followed by other text. You can
+define your itemnames in the ROBODoc configuration
+file <code>robodoc.rc</code>
+
+<!-- USE --!>
+
+<c>Use
+<q>Why should I use headertypes
+<a>TODO
+
+<!-- Configuration --!>
+
+<c>Configuration
+<q>How can I define my own items?
+<a>TODO
+
+<c>Configuration
+<q>How can I define my own headertypes?
+<a>TODO
+

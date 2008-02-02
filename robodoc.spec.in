@@ -1,0 +1,66 @@
+# $Id: robodoc.spec.in,v 1.1 2003/03/22 15:49:10 petterik Exp $
+Summary: Tool to extract documentation from source code
+Name: robodoc
+Version: PROJECT_VERSION
+Release: PROJECT_RELEASE
+Copyright: GPL
+Group: Development/Tools
+Source: %{name}-%{version}.tar.gz
+URL: http://www.xs4all.nl/~rfsber/Robo/index.html
+BuildRequires: xmlto >= 0.0.10-4 
+BuildRoot: %{_tmppath}/%{name}-root
+
+%description
+ROBODoc is a documentation tool. It extracts the documentation from comment 
+headers in the source code and formats it in HTML, RTF, TeX, or ASCII. Works 
+with C, Tcl, FORTRAN, and any other language that supports remarks or comments.
+
+%prep
+%setup -q
+
+%build
+aclocal
+automake -a
+autoconf
+%configure
+make %{_smp_mflags}
+
+%install
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/%{_datadir}/%{name}/Headers
+mkdir -p %{buildroot}/%{_bindir}
+mkdir -p %{buildroot}%{_mandir}/man1
+
+install -s -m 755 Source/robodoc %{buildroot}/%{_bindir}
+install -s -m 755 Source/robohdrs %{buildroot}/%{_bindir}
+install -s -m 755 Docs/robodoc.1 %{buildroot}%{_mandir}/man1
+install -s -m 755 Docs/robohdrs.1 %{buildroot}%{_mandir}/man1
+install -s -m 644 Headers/* %{buildroot}/%{_datadir}/%{name}/Headers
+
+%clean
+rm -rf %{buildroot}
+
+%files
+%defattr(-,root,root)
+%doc AUTHORS ChangeLog COPYING DEVELOPERS INSTALL NEWS README TODO UPGRADE Docs/manual.html
+%{_bindir}/*
+%{_mandir}/man1/*
+%{_datadir}/%{name}/Headers/*
+
+%changelog
+* Sun Mar 23 2003 petterik <petterik@users.sourceforge.net>
+- renamed robodoc.spec to robodoc.spec.in
+
+* Mon Feb 24 2003 petterik <petterik@users.sourceforge.net>
+- removed conversion of manual.xml to manual.html (incl in Docs/makefile)
+
+* Sat Feb 15 2003 Petteri Kettunen http://www.iki.fi/petterik/
+- manual.html build, Headers examples installed
+- BuildRequires xmlto
+
+* Mon Feb 10 2003 Petteri Kettunen http://www.iki.fi/petterik/
+- RH8.0 -specific changes
+- robohdrs binary and manual pages added
+
+* Fri Jan 03 2003 Petteri Kettunen http://www.iki.fi/petterik/
+- skeleton RPM

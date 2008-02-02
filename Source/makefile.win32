@@ -1,0 +1,105 @@
+#****h* ROBODoc/Makefile.win32
+# FUNCTION
+#   A makefile for win32.
+#   Well it is not really a proper makefile since the dependencies are
+#   missing, but it will compile robodoc using VC++
+# USAGE
+#   nmake -f makefile.win32 
+#   nmake -f makefile.win32 clean
+# NOTES
+#   run  vcvars32.bat    (part of VC++)
+#   before using this file.
+#*****
+
+.SUFFIXES :
+.SUFFIXES : .obj .c
+.c.obj:
+	$(CC) $(CFLAGS) -c $<
+
+CC = cl
+
+#****v* Makefile.win32/CFLAGS
+# FUNCTION
+#   The flags feeded to the compiler to compile a .c file.
+#
+#   -I.   look for include files in the current directory
+#   -Zi   enable debugging information.
+#   -W3 turns on warnings,
+#   -D RB_MSVC  defines the symbol RB_MSVC which is needed
+#               to compile the OS dependend parts of robodoc.
+# SOURCE
+#
+
+CFLAGS     = -c -I. -nologo -Zi -W3 -D RB_MSVC -D IGNORE_CASE_FILENAMES
+
+#******
+
+CLINK      = link
+CLINKFLAGS = /nologo /debug
+
+#****v* Makefile.win32/SOURCES
+# FUNCTION
+#   List of all the sources needed to compile ROBODoc.
+# SOURCE
+SOURCES=analyser.c generator.c items.c util.c folds.c headers.c \
+        headertypes.c links.c robodoc.c directory.c part.c file.c path.c \
+        html_generator.c latex_generator.c rtf_generator.c \
+        troff_generator.c sgmldocbook_generator.c ascii_generator.c \
+        globals.c document.c roboconfig.c xmldocbook_generator.c \
+        test_generator.c
+#*****
+
+OBJECTS=$(SOURCES:.c=.obj)
+
+
+#****e* Makefile.win32/robodoc.trg
+# FUNCTION
+#   Compile the robodoc executable. This makefile is
+#   missing a dependencies sections, so use this target
+#   only once.
+# SOURCE
+#
+robodoc.trg : $(OBJECTS)
+	$(CLINK) $(CLINKFLAGS) $(OBJECTS) /out:robodoc.exe
+#******
+
+#****v* Makefile.win32/clean
+# FUNCTION
+#   Delete all the files created in the build process.
+# SOURCE
+#
+clean:
+	del $(OBJECTS)
+	del robodoc.exe
+	del *.pdb *.ilk
+	del tags
+#*****
+
+
+frans: robodoc.trg
+	copy robodoc.exe c:\pws\bin
+
+LINTOPT = -ic:\pclint8\lnt -u std.lnt env-vc6.lnt -e715 +dRB_MSVC
+
+# LINTOPT = -ic:\pclint8\lnt -u std.lnt env-vc6.lnt -e715 -e613 -e550 -e740 -e732 -e713 -e737 -e818 -e830 -e641 +dRB_MSVC
+
+#****ie* Makefile.win32/lint
+# FUNCTION
+#   Runs lint on all the robodoc sources.
+# SOURCE
+#
+lint:
+	-c:\pclint8\lint-nt $(LINTOPT) globals.c
+	-c:\pclint8\lint-nt $(LINTOPT) latex_generator.c 
+	-c:\pclint8\lint-nt $(LINTOPT) rtf_generator.c 
+	-c:\pclint8\lint-nt $(LINTOPT) document.c
+	-c:\pclint8\lint-nt $(LINTOPT) file.c
+	-c:\pclint8\lint-nt $(LINTOPT) headers.c
+	-c:\pclint8\lint-nt $(LINTOPT) directory.c 
+	-c:\pclint8\lint-nt $(LINTOPT) headertypes.c
+	-c:\pclint8\lint-nt $(LINTOPT) util.c
+	-c:\pclint8\lint-nt $(LINTOPT) roboconfig.c
+	-c:\pclint8\lint-nt $(LINTOPT) robodoc.c
+	-c:\pclint8\lint-nt $(LINTOPT) generator.c
+	-c:\pclint8\lint-nt $(LINTOPT) html_generator.c
+#******

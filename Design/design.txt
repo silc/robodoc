@@ -1,0 +1,198 @@
+
+Some random notes about the design of robodoc.
+This will later be turned into a proper docbook
+document.
+
+
+
+Collections / Containers.
+
+For most of the containers a singly linked list is used.
+The link to the next element is called "next" and is the
+first field in any structure that is stored in a linked list.
+
+For instance
+
+struct S {
+    struct S* next;
+    long   another_field;
+    char*  aName;
+};
+
+An anchor points to the first element in the list.
+
+If this convention is used for all linked lists than it is
+easy to remember how to iterate through the container.
+
+    struct X* x_container;
+
+    struct X* x_iterator;
+    for ( x_iterator = x_container;
+          x_iterator != 0;
+          x_iterator = x_iterator->next ) {
+
+    }
+
+Inserting an element:
+
+    x_new_element->next = x_container;
+    x_container = x_new_element;
+
+
+========================================================
+
+General Flow
+
+Sourcecode  ---> [ROBODoc] ---> Document.
+
+The sourcecode consists of one or more sourcefiles.
+The resulting document consists of one or more parts.
+
+For every sourcefile that is one part.
+There can be additional parts. For instance
+for indexfiles or to pull all parts into a single document.
+
+
+> Can someone explain the differences internally of a single doc
+> and multi doc? At first glance, it would seem that Lua scripts
+> should only implement single doc because they are to be free to
+> do as they please, but I may be mistaken.
+>
+> Please advise.
+
+The difference between singledoc and multidoc mode.
+
+The whole robodoc process consists of step 3
+(1) The scanning of the source directory tree -- this collect the names of
+    all the files and directories in the source directory tree.
+    All this information is stored in a RB_Directory structure inside
+    a RB_Document structure.
+(2) The analysing of all the sourcefiles -- this reads the content of
+    all the files found in step 1 and collects all the headers found in
+    these files.
+    These are store in list of RB_Part structures stored inside a
+    RB_Document structure.  For each sourcefile there is a RB_Part
+    structure.   All the headers found in a single source file are
+    stored as a list of RB_header structures in a RB_Part structure.
+(3) the generation of the documentation -- write the headers a
+    single documentation file or mulitiple documentation files.
+
+
+The difference between single doc and multidoc can be found in step 3.
+The difference can be seen in most clearly in the functions:
+RB_Generate_SingleDoc() and  RB_Generate_MultiDoc()
+
+If you look at the start of both functions they both call:
+
+    RB_Document_Collect_Headers( document );
+    RB_Document_Link_Headers( document );
+    RB_Fill_Header_Filename( document );
+    RB_Name_Headers( document->headers, document->no_headers );
+    RB_CollectLinks( document, document->headers, document->no_headers );
+
+However before this RB_Generate_MultiDoc() calls
+
+    RB_Document_Determine_DocFilePaths( document );
+    RB_Document_Create_DocFilePaths( document );
+    RB_Document_Determine_DocFileNames( document );
+
+This creates the documentation directory tree, which is a mirror image
+of the source directory tree, and determines for each RB_Part
+(sourcefile) the filename for the documentation file.
+The information is later used in RB_Fill_Header_Filename().
+
+RB_Fill_Header_Filename() stores the name of the file a header is
+to be written to.  In single doc mode RB_Fill_Header_Filename() this
+filename is always the same (the filename specified with the
+--doc option).  In multidoc mode the filename can be different and is
+based on the name computed in RB_Document_Determine_DocFileNames().
+
+In singledoc mode a single file is now opened.  For each part,
+the headers in this part are written to this file.  (So all
+headers end up in the same file).
+
+In multidoc mode a new file is opened for each part, and the headers
+in the part are written to this file.  (So headers end up in
+different files).
+
+In addition in multidoc mode a series of index files can be generated.
+
+
+
+=====================================================================
+
+General Flow
+
+Sourcecode  ---> [ROBODoc] ---> Document.
+
+The whole ROBODoc process consists of three steps: scanning,
+analysing, generating.
+
+Scanning 
+
+ROBODoc scans the source directory tree. This collects the names of
+all the source files.
+
+Analysing
+
+ROBODOc analyses all the sourcefiles. This reads the content of all
+source files and collects all the headers.
+
+Generating
+
+In this step the headers are written to one or more documentation files.
+In addition 
+
+The data collected during scanning and analysing is stored in a
+number of structures.
+
+RB_Directory, it stores the names of the sourcefiles and directories
+in the source direcory tree.  Files names are stored in a RB_Filename
+structure, directory names in a RB_Path structure.  Each RB_Filename
+contains a pointer (path) a RB_Path that tells in which directory a
+file is located.  Each RB_Path has a pointer (parent) to another
+RB_Path that tells of which directory is a directory located (of which
+directory it is a subdirectory).  The only exception is the root
+directory.
+
+Besides the name of the sourcefile, the RB_Filename also stores the
+name of the documentation file.
+
+For each sourcefile there is an RB_Part structure.  It contains a
+pointer (filename) to the RB_Filename and a list (headers) of
+RB_Header structure containing the headers found in the sourcefile.
+
+Every RB_Header structure contains a pointer (owner) to the RB_Part
+structure to which it belongs.  Headers can form a hierarchy that is
+used to create sections and subsections in the documentation.  To
+store this hierarchy every RB_header structure contains a pointer
+(parent) to its parent header.  For instance, given the following two
+headers, SubModule is the parent of SubSubModule.
+
+/****h* TopModule/SubModule
+ *
+ ****/
+
+/****h* SubModule/SubSubModule
+ *
+ ****/
+
+In the documentation this creates the sections
+
+1.TopModule
+1.1 SubModule
+1.1.1 SubSubModule
+
+
+The RB_Directory and the linked list of RB_Part structures are
+stored in a RB_Document structure.
+
+During the generation of the documentation ROBODoc tries to create
+cross links between the mention of a header's name (on object) and the
+documentation generated from that header (the documentation for the
+object).
+
+To aid this proces there is an array of RB_link structures.  This
+array is sorted for quick searching.
+
+

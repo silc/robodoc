@@ -1,0 +1,20 @@
+
+
+int an_int_var = 100;
+
+
+int test_function( int x, int y )
+{
+    int i;
+    for ( i = 0; i < 100; ++i )
+    {
+        printf("Hello\n");
+    }
+}
+
+int test_function2( int x, int y )
+{
+
+
+}
+

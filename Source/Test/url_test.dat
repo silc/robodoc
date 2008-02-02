@@ -1,0 +1,13 @@
+/****h* URLTest/URLTest
+ * NAME
+ *   URLTest
+ * NOTES
+ *   file:/my_file.testmark_1
+ *   href:ftp://my_href.testmark_2
+ *   http://my_http.testmark_3
+ *   http://my_http.testmark_4.
+ *   mailto:my_mail@testmark_5
+ *   image:http://www.jinwicked.com/images/art/stallman.jpg
+ *****
+ */
+

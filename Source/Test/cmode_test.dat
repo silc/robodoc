@@ -1,0 +1,28 @@
+/* C_MODE test file */
+/* $Id: cmode_test.dat,v 1.3 2002/04/06 06:25:29 petterik Exp $ */
+/****f* Test/cmode
+* NAME
+*   C_MODE test file
+* SOURCE
+*/
+
+void tes(void) 
+{
+	char quote = 0; /* TEST_COMMENT */
+	printf("'"); /* TEST_COMMENT */
+	ch = '\''; /* TEST_COMMENT */
+	ch = '\\'; /* TEST_COMMENT */
+	char *str1 = "\\huuhaa"; /* TEST_COMMENT */
+	char *str2 = "'''";  /* TEST_COMMENT */
+	printf("/* huuhaa */" "\\" "huuhaa"); /* TEST_COMMENT */
+	/* unbalanced double quotes in comments "foobar"" */ 
+	/* TEST_COMMENT */
+	/* unbalanced single quotes in comments '  */ 
+	/* TEST_COMMENT */
+	strncmp("/*", cur_char, 2); /* TEST_COMMENT */
+	fprintf(dest_doc, "<HEINEKEN COLOR = \"#00FF00\">/*"); /* TEST_COMMENT */
+	strncmp("*/", cur_char, 2); /* TEST_COMMENT */
+	fprintf(dest_doc, "*/</HEINEKEN>"); /* TEST_COMMENT */
+}
+
+/**********/

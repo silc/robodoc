@@ -1,0 +1,6 @@
+#****h* ROBODoc/Makefile.plain
+# NAME
+#   Makefile.plain -- Plain makefile that does not need autoconf 
+# AUTHOR
+#    Mäkelä
+#*****

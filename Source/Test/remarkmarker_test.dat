@@ -1,0 +1,25 @@
+/****f* Test/Test *
+ *  NAME 
+ *    remark markers test
+ *  LINE 1
+//  LINE 2
+*   LINE 3
+;*  LINE 4
+;   LINE 5
+C    LINE 6
+REM LINE 7
+%   LINE 8
+#   LINE 9
+      * LINE 10
+-- LINE 11
+|  LINE 12
+!! LINE 13
+   LINE 14    Should be skipped, because it does not start with a
+              remark marker
+#  SOURCE
+
+   LINE 15    Should not be skipped because it is part of a source item
+#  LINE 16    This too should be there
+/******/
+
+

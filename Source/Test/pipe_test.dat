@@ -1,0 +1,31 @@
+/****m* pipe/pipetest
+ * NAME
+ *   pipetest
+ * NAME
+ *   Simple header to test "piping" features in items. 
+ * EXAMPLE
+ *   Only "pipes" which match selected output style are picked up. 
+ *   |html <CENTER>This will be included in <B>HTML</B> output.</CENTER>
+ *   |latex \centerline{This will be included in \LaTeX output}
+ *   Space is mandatory following the pipe marker. The following is not a
+ *   valid pipe marker:
+ *   |html<B>Moi!</B>
+ *   You should see an equation on the following line:
+ *   |html y = x^2 (sorry, plain HTML is not very powerfull)
+ *   |latex \centerline{$y = x^2$}
+ *   How does this look like?
+ *   Here comes a multi-line equation array:
+ *    |latex \begin{eqnarray}
+ *    |latex \frac{\partial u}{\partial \tau} & = & D_u {\nabla}^2 u + 
+ *    |latex \frac{1}{\epsilon}
+ *    |latex \left ( \hat{u}-{\hat{u}}^2-f\, {v} \, \frac{\hat{u}-q}{\hat{u}+q}
+ *    |latex \right ) \; ,  \label{diffspot:1} \\
+ *    |latex \frac{\partial v}{\partial \tau} & = & \hat{u}-v \; ,  
+ *    |latex \label{diffspot:2} \\
+ *    |latex \frac{\partial r}{\partial \tau} & = & D_r {\nabla}^2 r \; .
+ *    |latex \label{diffspAot:3}
+ *    |latex \end{eqnarray}
+ *    |html <I>TODO: write this in html</I>
+ *   Remove this line and you'll experience a bug...
+ ******
+ */

@@ -1,0 +1,188 @@
+.de EX          \"Begin example
+.ne 5
+.if n .sp 1
+.if t .sp .5
+.nf
+.in +.5i
+..
+.de EE
+.fi
+.in -.5i
+.if n .sp 1
+.if t .sp .5
+..
+.TH ROBODoc "1" "Jul 2006" "ROBODoc 4.99.36"
+
+.SH NAME
+ROBODoc \- Extract documentation from source code.
+
+.SH SYNOPSIS
+.B robodoc
+.I --src
+<source>
+.I --doc
+<destination>
+.B [options]
+
+.SH DESCRIPTION
+
+ROBODoc extracts specially formated documentation from the source code.
+It allows you to maintain a program and its documentation in a single
+file.
+
+.SH OPTIONS
+
+.IP -c
+Show the copyright message.
+
+.IP --cmode
+Use ANSI C grammar in SOURCE items and use this for some syntax 
+highlighting (HTML only).
+
+.IP --doc
+Define the documentation directory or documentation file.  
+A directory should start with a '/' or a './' and 
+should not include any '..'.
+
+.IP --src
+Define the source directory or source file.  A directory should start
+with a '/' or a './' and should not include any '..'.
+
+.IP --ascii
+Generate documentation in ASCII format.
+
+.IP --html
+Generate documentation in HTML format.
+
+.IP --css
+Use to content of the specified file to create the 
+.IR robodoc.css .
+The content of the file is copied into 
+.IR robodoc.css .
+
+.IP --dbxml
+Generate documentation in XML DocBook format.
+
+.IP --latex
+Generate documentation in LaTeX format.
+
+.IP --rtf
+Generate documentation in RTF format.
+
+.IP --index
+Create an additional master index file.
+
+.IP --multidoc
+Store all documentation in seperate files.
+
+.IP --singledoc
+Store all documentation in a single file.
+
+.IP --singlefile
+Generate a single document from a single file
+
+.IP --toc
+Add a table of contents. This works in multidoc mode as well as singledoc mode.
+
+.IP --internal
+Also include headers marked internal.
+
+.IP --internalonly
+Only include headers marked internal.
+
+.IP --ignore_case_when_linking
+Ignore the case of the symbols when trying to find crosslinks.
+In this mode FOO and Foo will be linked to foo.
+
+.IP --footless
+Do not create the food of a document.
+
+.IP --headless
+Do not create the head of a document.
+
+.IP --lock
+Per source file 
+.B ROBODoc
+locks on the first headermarker it finds and will recognize only that 
+particular headermarker for the remaining part of the file.  In addition 
+it locks on the first remark marker in each header and will recognize 
+only that particular remark marker for the remaining part of the header. 
+
+.IP --nosource
+Do not include the SOURCE items.
+
+.IP --nodesc
+Do not scan any subdirectories, scan only the top level directory 
+of the source tree.
+
+.IP --nopre
+Do not use <PRE> and </PRE> in the HTML output, instead based on
+the layout of the text create paragraphs, item lists, and 
+preformatted sections.
+
+.IP --rc
+Use the specified file instead of 
+.IR robodoc.rc .
+Note that definitions in a configuration file over-ride
+built-in settings.
+
+.IP --sections
+Create sections based on the module hierarchy.
+
+.IP --tabsize
+Lets you specify the tabsize.
+
+.IP --tell
+.B ROBODoc 
+tells you about every step it takes.
+
+.IP --version
+Print version information and exit.
+
+.SH EXAMPLES
+
+.EX
+robodoc --src ./ --doc myproject --singledoc --html
+.EE
+
+Creates a document called myproject.html from all source files
+in the current directory.
+
+.EX
+robodoc --src ./myproject/ 
+      --doc ./myprojectdoc --multidoc --html --index
+.EE
+
+Creates seperate documents for all the source files found in
+the directory ./myproject they are stored in the directory ./myprojectdoc.
+A master index file called ./myprojectdoc/masterindex.html is also
+created.  This provides links to all the individual files.
+
+.SH FILES
+.SS "Example headers"
+.PP
+.nf
+\fI/usr/local/share/doc/robodoc/Examples\fR
+.fi
+
+.SH COPYRIGHT
+
+Copyright \(co 1994-2003 Frans Slothouber, Petteri Kettunen, and Jacco van Weert.
+
+.br
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+.SH AUTHORS
+
+Frans Slothouber, Jacco van Weert, Petteri Kettunen, Bernd Koesling,
+Thomas Aglassinger, Anthon Pang, Stefan Kost, David Druffner, Sasha Vasko,
+Nathan Prewitt and Dennis Stampfer.
+
+.SH SEE ALSO
+
+The documentation in HTML format that comes with ROBODoc. Latest
+version can be found from http://www.xs4all.nl/~rfsber/Robo/ or from
+http://sourceforge.net/projects/robodoc/.
+
+.BR robohdrs(1)

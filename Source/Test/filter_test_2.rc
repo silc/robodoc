@@ -1,0 +1,6 @@
+ignore files:
+    ToBeIgnored
+accept files:
+    *.c
+    *.pl
+    *.h

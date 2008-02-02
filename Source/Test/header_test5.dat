@@ -1,0 +1,86 @@
+#****f* T5Test/test
+# FUNCTION
+#   Test oo1
+# SOURCE
+testmark 1
+# testmark 2
+testmark 3
+#
+# NOTES
+#   testmark 4
+# NAME
+#   testmark 5
+#****
+
+#****f* T5Test/test2
+# FUNCTION
+#   Test
+# SOURCE
+#
+testmark 1
+# testmark 2
+testmark 3
+# NOTES
+#   testmark 4
+# NAME
+#   testmark 5
+#****
+
+#****f* T5Test/test3
+# FUNCTION
+#   Test
+    testmark 2100    should not be in the doc
+    testmark 2200    should not be in the doc
+# SYNOPSIS
+#   testmark 1
+#   testmark 2
+testmark 3
+# NOTES
+#   testmark 4
+# NAME
+#   testmark 5
+# SOURCE
+#
+  aaaa
+  bbbb
+  cccc
+  dddd
+  eeee
+#****
+
+testmark 33000   should not be in the doc
+
+
+
+/****f* T5Test/test4
+ * FUNCTION
+ *   Test
+    testmark 2100    should not be in the doc
+    testmark 2200    should not be in the doc
+ * SYNOPSIS
+ */
+/*   testmark 1 */
+/*   testmark 2 */
+
+testmark 3
+
+/*
+ * NOTES
+ *   testmark 4
+ * NAME
+ *   testmark 5
+ * SOURCE
+ */
+  aaaa
+  bbbb
+  cccc
+  dddd
+  eeee
+/*****/
+
+testmark 33001   should not be in the doc
+
+
+/*****/
+
+

@@ -1,0 +1,38 @@
+
+/****f* bad1$bad1/bad2$bad2
+ * NAME
+ *    bad2[bad2
+ * SEE ALSO
+ *   bad3%bad3
+ ******
+ */
+
+
+/****f* bad1$bad1/bad3%bad3
+ * NAME
+ *   bad3%bad3
+ * SEE ALSO
+ *   bad2[bad2
+ ******
+ */
+
+/****f* bad1$bad1/bad4$bad4
+ * NAME
+ *   bad4]bad4
+ * SEE ALSO
+ *   bad2[bad2
+ *
+ ******
+ */
+
+/****f* bad1$bad1/bad5_bad5
+ * NAME
+ *   bad5_bad5
+ * SEE ALSO
+ *   bad2$bad2
+ *   bad3%bad3
+ *   bad4$bad4
+ ******
+ */
+
+

@@ -1,0 +1,22 @@
+
+#****f* A_Module_TEST/a_function_test
+# FUNCTION
+#   A Test
+#*****
+
+#****f* A_Module_TEST/a function test
+# FUNCTION
+#   A Test
+#*****
+
+#****f* A_Module_TEST/a function_test                           
+# FUNCTION
+#   A Test                           ^^^^ evil extra spaces ^^^^
+#*****
+
+#****f* A Module TEST/a_function_test
+# FUNCTION
+#   A Test
+#*****
+
+

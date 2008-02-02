@@ -1,0 +1,94 @@
+/* Classes */
+
+/****ic* InternalHeaderTest/InternalClass_it_1
+ * NAME
+ *   InternalClass_ --
+ *****/
+
+/****ic* InternalHeaderTest/InternalClass_2_it_2
+ * NAME
+ *   InternalClass_2 --
+ *****/
+
+/****c* InternalHeaderTest/Class
+ * NAME
+ *   Class --
+ *****/
+
+/****c* InternalHeaderTest/Class_2
+ * NAME
+ *   Class_2 --
+ *****/
+
+/* Headers */
+
+/****h* InternalHeaderTest/Header
+ * NAME
+ *   Header --
+ *****/
+
+/****ih* InternalHeaderTest/InternalHeader_it_3
+ * NAME
+ *   InternalHeader --
+ *****/
+
+/* Methods */
+
+/****m* InternalHeaderTest/Method
+ * NAME
+ *   Method --
+ *****/
+
+/****im* InternalHeaderTest/InternalMethod_it_4
+ * NAME
+ *   InternalMethod --
+ *****/
+
+/* Functions */
+
+/****f* InternalHeaderTest/Function
+ * NAME
+ *   Function --
+ *****/
+
+/****if* InternalHeaderTest/InternalFunction_it_5
+ * NAME
+ *   InternalFunction --
+ *****/
+
+/* Constants */
+
+/****d* InternalHeaderTest/Constant
+ * NAME
+ *   Constant --
+ *****/
+
+/****id* InternalHeaderTest/InternalConstant_it_6
+ * NAME
+ *   InternalConstant --
+ *****/
+
+/* Variable */
+
+/****v* InternalHeaderTest/Variable
+ * NAME
+ *   Variable --
+ *****/
+
+/****iv* InternalHeaderTest/InternalVariable_it_7
+ * NAME
+ *   InternalVariable --
+ *****/
+
+/* Structures */
+
+/****s* InternalHeaderTest/Structure
+ * NAME
+ *   Structure --
+ *****/
+
+/****is* InternalHeaderTest/InternalStructure_it_8
+ * NAME
+ *   InternalStructure --
+ *****/
+

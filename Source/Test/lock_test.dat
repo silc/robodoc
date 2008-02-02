@@ -1,0 +1,32 @@
+Program Test
+!!****f* main/test
+!! NAME
+!!  Testing 1 2 3
+!! Program Test
+	Test1 = ABC &
+	// det  ! This should not be displayed
+	Test2 = ABC &
+	* detail  ! This should not be displayed
+	Test3 = ABC + &
+	C * D  ! This should not be displayed
+	TEst4 = ABC * &
+	REM * B  ! This should not be displayed
+	Test5 = &
+	'Test'  ! This should not be displayed
+	End Program Test
+!!***
+
+
+/****f* main/test2
+ * NAME
+ *   This should not be displayed
+ * FUNCTION
+ *   This should not be displayed
+ * SOURCE
+ */
+
+This should not be displayed
+This should not be displayed
+
+/******/
+

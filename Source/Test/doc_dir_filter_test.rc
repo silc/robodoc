@@ -1,0 +1,13 @@
+options:
+    --src .
+    --doc ./DocNot
+    --multidoc
+    --html
+ignore files:
+    CVS
+accept files:
+    *.pl
+headertypes:
+    u  Unittests robo_unittest
+    x  "System tests"  robo_sys_tests
+    e  "Makefile entries"  robo_mk_entries
