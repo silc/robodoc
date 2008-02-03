@@ -49,13 +49,39 @@ char               *current_file = 0;
 
 /****v* Globals/document_title
  * NAME
- *   documentat_title -- title for the documentation.
+ *   document_title -- title for the documentation.
  * PURPOSE
  *   Used as the title for master index files or for latex documentation.
  * SOURCE
  */
 
 char               *document_title = NULL;
+
+/******/
+
+
+/****v* Globals/document_header
+ * NAME
+ *   document_header -- Header for the documentation.
+ * PURPOSE
+ *   Used as the header of generated files
+ * SOURCE
+ */
+
+char               *document_header = NULL;
+
+/******/
+
+
+/****v* Globals/document_footer
+ * NAME
+ *   document_footer -- Footer for the documentation.
+ * PURPOSE
+ *   Used as the footer of generated files
+ * SOURCE
+ */
+
+char               *document_footer = NULL;
 
 /******/
 
@@ -152,7 +178,7 @@ int                 line_number = 0;
 /*******/
 
 /*
- * Global variables 
+ * Global variables
  */
 /* TODO  Document these. */
 

@@ -57,8 +57,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Default document title
 #define DEFAULT_DOCTITILE   "API Reference"
 
-// Document title
+// Document title, header and footer
 extern char        *document_title;
+extern char        *document_header;
+extern char        *document_footer;
 
 extern char        *source_file;        /* DCD */
 

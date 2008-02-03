@@ -66,6 +66,8 @@ typedef struct actions_s
     int                 do_singlefile:1;
     int                 do_one_file_per_header:1;
     int                 do_no_subdirectories:1;
+    int                 do_module_index_menu:1;
+    int                 do_header_toc:1;
 
     // Latex options
     int                 do_altlatex:1;
@@ -93,7 +95,7 @@ typedef struct actions_s
  *   Enumeration for the various output formats that are
  *   supported by ROBODoc.
  * NOTES
- *   These should be prefixed with RB_ 
+ *   These should be prefixed with RB_
  * SOURCE
  */
 
@@ -138,4 +140,3 @@ actions_t           No_Actions(
     void );
 
 #endif /* ROBODOC_ROBODOC_H */
-

@@ -38,6 +38,12 @@ void                RB_HTML_Generate_Item_Begin(
 void                RB_HTML_Generate_Item_End(
     FILE *dest_doc,
     char *name );
+void                RB_HTML_Generate_TOC_Entries(
+    FILE *dest_doc,
+    struct RB_header **headers,
+    int count,
+    struct RB_Part *owner,
+    char *dest_name );
 void                RB_HTML_Generate_TOC_2(
     FILE *dest_doc,
     struct RB_header **headers,
@@ -159,6 +165,17 @@ void                HTML_Generate_End_Extra(
 void                RB_HTML_Generate_Line_Comment_End(
     FILE *dest_doc );
 void                RB_HTML_Generate_IndexMenu(
+    FILE *dest_doc,
+    char *filename,
+    struct RB_Document *document,
+    struct RB_HeaderType *cur_type );
+void                RB_HTML_Generate_Header_IndexMenu(
+    FILE *dest_doc,
+    char *filename,
+    struct RB_Document *document,
+    struct RB_Part *owner,
+    struct RB_HeaderType *cur_type );
+void                RB_HTML_Generate_Module_IndexMenu(
     FILE *dest_doc,
     char *filename,
     struct RB_Document *document,

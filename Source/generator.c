@@ -999,6 +999,41 @@ void Generate_IndexMenu(
 
 }
 
+void Generate_Header_IndexMenu(
+    FILE *dest_doc,
+    char *filename,
+    struct RB_Part *owner,
+    struct RB_Document *document )
+{
+    switch ( output_mode )
+    {
+    case HTML:
+        RB_HTML_Generate_Header_IndexMenu( dest_doc, filename,
+					   document, owner, NULL );
+        break;
+    default:
+        break;
+    }
+
+}
+
+void Generate_Module_IndexMenu(
+    FILE *dest_doc,
+    char *filename,
+    struct RB_Document *document )
+{
+    switch ( output_mode )
+    {
+    case HTML:
+        RB_HTML_Generate_Module_IndexMenu( dest_doc, filename,
+					   document, NULL );
+        break;
+    default:
+        break;
+    }
+
+}
+
 void Generate_Begin_Extra(
     FILE *dest_doc )
 {
@@ -1043,7 +1078,7 @@ void RB_Generate_Nav_Bar(
     case XMLDOCBOOK:
         break;
     case HTML:
-        if ( course_of_action.do_one_file_per_header )
+      if ( course_of_action.do_one_file_per_header )
         {
             /* Nothing */
         }
@@ -1145,7 +1180,7 @@ void RB_Name_Headers(
 /****f* Generator/RB_Sort_Items
  * FUNCTION
  *   Sort the items in all the headers according to the order
- *   specified in the 'item order' block in the robodoc.rc 
+ *   specified in the 'item order' block in the robodoc.rc
  *   file.
  * SYNOPSIS
  */
@@ -1390,21 +1425,33 @@ void RB_Generate_MultiDoc(
         if ( i_part->headers == 0 )
             continue;
 
-
         if ( output_mode != TROFF )
         {
             document_file = RB_Open_Documentation( i_part );
             RB_Generate_Doc_Start( document,
-                                   document_file, srcname, srcname, 1,
+                                   document_file, srcname,
+				   i_part->filename->name, 1,
                                    docname, document->charset );
 
             Generate_Begin_Navigation( document_file );
             if ( document->actions.do_one_file_per_header )
             {
-                RB_HTML_Generate_Nav_Bar_One_File_Per_Header( document,
-                                                              document_file,
-                                                              i_part->
-                                                              headers );
+	        if ( document->actions.do_module_index_menu )
+		{
+		    if ( i_part->headers[0].htype->typeCharacter == 'h' )
+		        Generate_Module_IndexMenu( document_file, docname,
+						   document );
+		    else
+		        Generate_Header_IndexMenu( document_file, docname,
+						   i_part, document );
+		}
+		else
+		{
+		    RB_HTML_Generate_Nav_Bar_One_File_Per_Header( document,
+								  document_file,
+								  i_part->
+								  headers );
+		}
             }
             else
             {
@@ -1421,6 +1468,17 @@ void RB_Generate_MultiDoc(
                                    i_part, docname );
             }
             RB_Generate_Part( document_file, document, i_part );
+
+	    if ( document->actions.do_header_toc && output_mode == HTML )
+	      {
+		if ( document->actions.do_one_file_per_header &&
+		     i_part->headers[0].htype->typeCharacter == 'h' )
+		    RB_HTML_Generate_TOC_Entries( document_file,
+						  document->headers,
+						  document->no_headers,
+						  i_part, docname );
+	      }
+
             Generate_End_Content( document_file );
 
             RB_Generate_Doc_End( document_file, docname, srcname );
@@ -1516,6 +1574,16 @@ void RB_Generate_SingleDoc(
         {
             RB_Generate_Part( document_file, document, i_part );
         }
+    }
+
+    if ( document->actions.do_header_toc && output_mode == HTML )
+    {
+        if ( i_part->headers[0].htype->typeCharacter == 'h' )
+	    RB_HTML_Generate_TOC_Entries( document_file,
+					  document->headers,
+					  document->no_headers,
+					  i_part,
+					  document->parts->filename->name );
     }
 
     RB_Generate_Doc_End( document_file, "singledoc",
@@ -1720,7 +1788,6 @@ void RB_Generate_Part(
     {
         RB_TROFF_Set_Param( document->compress, document->section );
     }
-
 
     for ( i_header = part->headers; i_header; i_header = i_header->next )
     {
@@ -2487,7 +2554,7 @@ static void Generate_Item_Line(
             {
                 if ( utf8_isspace( c ) )
                 {
-                    /* We found the end of the string, so we go 
+                    /* We found the end of the string, so we go
                      * back to the space skipping state
                      */
                     state = SKIP_SPACE;

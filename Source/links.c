@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *   In addition to the links derived from the headers links are
  *   also derived from the names of all the sourcefiles.
  * MODIFICATION HISTORY
- *   ????-??-??   Frans Slothouber  V1.0 
+ *   ????-??-??   Frans Slothouber  V1.0
  *   2003-02-03   Frans Slothouber  Refactoring
  *******
  * $Header: /cvsroot/robodoc/robo/Source/links.c,v 1.43 2007/07/10 19:13:52 gumpu Exp $
@@ -99,12 +99,12 @@ char * function_name( char * full_name )
  * SYNOPSIS
  */
 void
-RB_CollectLinks( struct RB_Document *document, 
+RB_CollectLinks( struct RB_Document *document,
                  struct RB_header **headers,
                  unsigned long count )
 /*
  * INPUTS
- *   * document -- 
+ *   * document --
  *   * headers  -- the array with headers.
  *   * count    -- number of headers in the array
  * OUTPUT
@@ -118,7 +118,7 @@ RB_CollectLinks( struct RB_Document *document,
     int  k;
     struct RB_Part     *i_part;
 
-    for ( i = j = 0; i < count; ++i ) 
+    for ( i = j = 0; i < count; ++i )
     {
         j += headers[i]->no_names - 1;
     }
@@ -131,7 +131,7 @@ RB_CollectLinks( struct RB_Document *document,
     {
         for ( i_part = document->parts; i_part; i_part = i_part->next )
         {
-            if ( i_part->headers ) 
+            if ( i_part->headers )
             {
                 link_index_size++;
             }
@@ -155,8 +155,9 @@ RB_CollectLinks( struct RB_Document *document,
         assert( header->file_name );
         for( k = 0; k < header->no_names; j++, k++ )
         {
-            link = RB_Alloc_Link( header->unique_name, function_name(header->names[k]),
-                                  header->file_name );
+	    link = RB_Alloc_Link( header->unique_name,
+				  header->function_name,
+				  header->file_name );
             link->htype = header->htype;
             link->is_internal = header->is_internal;
             link_index[j] = link;
@@ -175,7 +176,7 @@ RB_CollectLinks( struct RB_Document *document,
     {
         for ( i_part = document->parts; i_part; i_part = i_part->next )
         {
-            if ( i_part->headers ) 
+            if ( i_part->headers )
             {
                 struct RB_link     *link;
 
@@ -273,18 +274,18 @@ int RB_Number_Of_Links( struct RB_HeaderType* header_type, char* file_name, int 
  *   Searches for the given word in the list of links and
  *   headers.  There are three passes (or four, when the C option
  *   is selected). Each pass uses a different definition of "word":
- *   o In the first pass it is any thing that ends with a 'space', a '.' 
+ *   o In the first pass it is any thing that ends with a 'space', a '.'
  *     or a ','.
  *   o In the second pass it is any string that consists of alpha
- *     numerics, '_', ':', '.', or '-'.  
- *   o In the third pass (for C) it is any string that consists 
+ *     numerics, '_', ':', '.', or '-'.
+ *   o In the third pass (for C) it is any string that consists
  *     of alpha numerics or '_'.
  * SYNOPSIS
  */
 
 int
-Find_Link( char *word_begin, 
-           char **object_name, 
+Find_Link( char *word_begin,
+           char **object_name,
            char **label_name,
            char **file_name )
 /*
@@ -335,7 +336,7 @@ Find_Link( char *word_begin,
         case 2:
             {
                 for ( cur_char = word_begin;
-                      utf8_isalnum( *cur_char ) || ( *cur_char == '_'); 
+                      utf8_isalnum( *cur_char ) || ( *cur_char == '_');
                       cur_char++ );
                 break;
             }
@@ -348,7 +349,7 @@ Find_Link( char *word_begin,
 
         old_char = *cur_char;
         *cur_char = '\0';       /*
-                                 * End the word with a '\0' 
+                                 * End the word with a '\0'
                                  */
         if ( strlen( word_begin ) == length )
         {
@@ -363,7 +364,7 @@ Find_Link( char *word_begin,
             length = strlen( word_begin );
             /* RB_Say ("Testing (pass %d) \"%s\"\n", SAY_INFO, pass, word_begin); */
             /*
-             * Search case sensitive for a link 
+             * Search case sensitive for a link
              */
             for ( cur_index = 0, low_index = 0, high_index =
                     link_index_size - 1; high_index >= low_index; )
@@ -394,7 +395,7 @@ Find_Link( char *word_begin,
              * Search case insensitive for a link.
              * But only when the user asks for this.
              */
-            if ( course_of_action.do_ignore_case_when_linking ) 
+            if ( course_of_action.do_ignore_case_when_linking )
             {
 
                 for ( cur_index = 0, low_index = 0, high_index =
@@ -443,7 +444,7 @@ Find_Link( char *word_begin,
  */
 static struct RB_link *
 RB_Alloc_Link( char *label_name, char *object_name, char *file_name )
-/* 
+/*
  * INPUTS
  *   char *label_name -- strings to copy into the link
  *   char *file_name
@@ -460,7 +461,6 @@ RB_Alloc_Link( char *label_name, char *object_name, char *file_name )
     struct RB_link     *new_link;
 
     assert( object_name );
-    assert( label_name );
     assert( file_name );
     RB_Say( "Allocating a link (%s %s %s)\n", SAY_DEBUG, object_name, label_name, file_name );
     new_link = malloc( sizeof( struct RB_link ) );
@@ -468,7 +468,7 @@ RB_Alloc_Link( char *label_name, char *object_name, char *file_name )
 
     new_link->file_name = RB_StrDup( file_name );
     new_link->object_name = RB_StrDup( object_name );
-    new_link->label_name = RB_StrDup( label_name );
+    new_link->label_name = label_name ? RB_StrDup( label_name ) : NULL;
     return ( new_link );
 }
 
@@ -508,4 +508,3 @@ void RB_Free_Link( struct RB_link *arg_link )
 }
 
 /******/
-

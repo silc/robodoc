@@ -48,7 +48,7 @@ void Print_Short_Use(
 
 /****t* UserInterface/Option_Test_Kind
  * FUNCTION
- *   Enumeration for the kind of tests that are carried out on the 
+ *   Enumeration for the kind of tests that are carried out on the
  *   options that the user specifies.
  * SOURCE
  */
@@ -139,6 +139,8 @@ static char        *ok_options[] = {
     "--singlefile",
     "--multidoc",
     "--one_file_per_header",
+    "--module_index_menu",
+    "--header_toc",
     "--first_section_level",
     "--sections",
     "--internal",
@@ -181,6 +183,8 @@ static char        *ok_options[] = {
     "--masterindex",
     "--sourceindex",
     "--header_breaks",
+    "--document_header",
+    "--document_footer",
     ( char * ) NULL
 };
 
@@ -226,7 +230,7 @@ static void Add_Option_Test(
 static void Add_Option_Name(
     struct RB_Option_Test *option_test,
     char *name )
-/* 
+/*
  * INPUTS
  *   option_test -- the option test
  *   name -- the name of the option
@@ -425,7 +429,7 @@ static int Do_Mutual_Exlcude_Test(
 /****f* UserInterface/Do_Option_Tests
  * FUNCTION
  *   Run a series of tests on the options that the user
- *   specified.  These tests are specified in 
+ *   specified.  These tests are specified in
  *   option_tests.
  * SYNOPSIS
  */

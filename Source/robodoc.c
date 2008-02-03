@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *   The whole ROBODoc process consists of three steps: scanning,
  *   analysing, generating.
  *
- *   Scanning 
+ *   Scanning
  *
  *   ROBODoc scans the source directory tree. This collects the names of
  *   all the source files.
@@ -45,7 +45,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *   Generating
  *
  *   In this step the headers are written to one or more documentation files.
- *   In addition 
+ *   In addition
  *
  *
  *   The data collected during scanning and analysing is stored in a
@@ -59,14 +59,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *   another RB_Path structure that tells in which directory is a directory
  *   located (of which directory it is a subdirectory).  The only exception
  *   is the root directory.
- *   
+ *
  *   Besides the name of the sourcefile, the RB_Filename also stores the
  *   name of the documentation file.
- *   
+ *
  *   For each sourcefile there is an RB_Part structure.  It contains a
  *   pointer (filename) to the RB_Filename and a list (headers) of
  *   RB_Header structure containing the headers found in the sourcefile.
- *   
+ *
  *   Every RB_Header structure contains a pointer (owner) to the RB_Part
  *   structure to which it belongs.  Headers can form a hierarchy that is
  *   used to create sections and subsections in the documentation.  To
@@ -75,25 +75,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *   headers, SubModule is the parent of SubSubModule.
  *     ****h* TopModule/SubModule
  *     *
- *     **** 
- *   
+ *     ****
+ *
  *     ****h* SubModule/SubSubModule
  *     *
- *     **** 
- *   
+ *     ****
+ *
  *   In the documentation this creates the sections
  *      1.TopModule
  *      1.1 SubModule
  *      1.1.1 SubSubModule
- *   
+ *
  *   The RB_Directory and the linked list of RB_Part structures are
  *   stored in a RB_Document structure.
- *   
+ *
  *   During the generation of the documentation ROBODoc tries to create
  *   cross links between the mention of a header's name (an object) and the
  *   documentation generated from that header (the documentation for the
  *   object).
- *   
+ *
  *   To aid this proces there is an array of RB_link structures.  This
  *   array is sorted for quick searching.  RB_link structures the name
  *   of a header and the name of the label under which the documentation
@@ -291,8 +291,16 @@ char                use_options3[] =
     "                    Specify the tile and filename for master index page\n"
     "   --sourceindex title,filename\n"
     "                    Specify the tile and filename for source files index page\n"
+    "   --document_header filename\n"
+    "                    Read document header from specified file\n"
+    "   --document_footer filename\n"
+    "                    Read document footer from specified file\n"
     "   --one_file_per_header\n"
     "                    Create a separate documentation file for each header\n"
+    "   --module_index_menu\n"
+    "                    Create a module menu when used with --one_file_per_header\n"
+    "   --header_toc\n"
+    "                    Create a header TOC when used with --one_file_per_header\n"
     "   --header_breaks NUMBER\n"
     "                    Insert a linebreak after every NUMBER header names\n"
     "                    (default value: 2, set to zero to disable)\n" "\n";
@@ -353,13 +361,17 @@ int main(
     struct RB_Directory *srctree = NULL;
     char               *optstr = NULL;
     char               *used_rc_file = NULL;
+    char               *doc_h = NULL;
+    char               *doc_f = NULL;
+    char               buffer[8192];
+    int                r_len;
     long                debug = 0;
 
 /*
    TODO, make setlocale work.
     char * loc;
 
-    if ( (loc = getenv("LC_CTYPE") ) != NULL ) 
+    if ( (loc = getenv("LC_CTYPE") ) != NULL )
     {
         printf( ".... %s\n", loc );
         setlocale( LC_ALL, loc);
@@ -429,6 +441,8 @@ int main(
     document->compress = Find_Parameterized_Option( "--compress" );
     document->section = Find_Parameterized_Option( "--mansection" );
     document_title = Find_Parameterized_Option( "--documenttitle" );
+    doc_h = Find_Parameterized_Option( "--document_header" );
+    doc_f = Find_Parameterized_Option( "--document_footer" );
     optstr = Find_Parameterized_Option( "--first_section_level" );
     if ( optstr )
     {
@@ -512,6 +526,46 @@ int main(
                 " or directory with --doc.\n" );
         Print_Short_Use(  );
         return EXIT_FAILURE;
+    }
+
+    /* Open header and footer files */
+    if ( doc_h )
+    {
+        FILE *dh = fopen( doc_h, "r" );
+	if ( !dh )
+	{
+	    printf( "Error: '%s' no such file or directory\n", doc_h );
+	    Print_Short_Use(  );
+	    return EXIT_FAILURE;
+	}
+
+	memset( buffer, 0, sizeof( buffer ) );
+	r_len = fread ( buffer, 1, sizeof( buffer ), dh );
+	if ( r_len > 0 )
+	{
+	  document_header = calloc( r_len, sizeof( *document_header ) );
+	  memcpy( document_header, buffer, r_len );
+	}
+	fclose( dh );
+    }
+    if ( doc_f )
+    {
+        FILE *df = fopen( doc_f, "r" );
+	if ( !df )
+	{
+	    printf( "Error: '%s' no such file or directory\n", doc_f );
+	    Print_Short_Use(  );
+	    return EXIT_FAILURE;
+	}
+
+	memset( buffer, 0, sizeof( buffer ) );
+	r_len = fread ( buffer, 1, sizeof( buffer ), df );
+	if ( r_len > 0 )
+	{
+	  document_footer = calloc( r_len, sizeof( *document_footer ) );
+	  memcpy( document_footer, buffer, r_len );
+	}
+	fclose( df );
     }
 
     /* What mode are we using? */
@@ -789,7 +843,7 @@ static char        *Find_And_Fix_Path(
  *   other function of robodoc that expect a '/'.
  *   So to prevent this we replace all the '\' in a path
  *   with '/'
- *    
+ *
  *   In addition people sometimes add a '/' at the
  *   end of the path. We remove it.
  *
@@ -1133,6 +1187,16 @@ actions_t Find_Actions(
             actions.do_one_file_per_header = TRUE;
         }
         else if ( !RB_Str_Case_Cmp( configuration.options.names[parameter_nr],
+                                    "--module_index_menu" ) )
+        {
+	    actions.do_module_index_menu = TRUE;
+        }
+        else if ( !RB_Str_Case_Cmp( configuration.options.names[parameter_nr],
+                                    "--header_toc" ) )
+        {
+	    actions.do_header_toc = TRUE;
+        }
+        else if ( !RB_Str_Case_Cmp( configuration.options.names[parameter_nr],
                                     "--sections" ) )
         {
             actions.do_sections = TRUE;
@@ -1368,8 +1432,8 @@ char               *Find_Parameterized_Option(
  *   Search for an option of the form
  *     --a_option_name a_value
  *   in argv.   The function is used to look for the
- *     --rc  
- *   option that can be used to specify an 
+ *     --rc
+ *   option that can be used to specify an
  *   alternate robodoc configuration file.
  * SYNOPSIS
  */

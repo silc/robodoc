@@ -685,6 +685,48 @@ void RB_HTML_Generate_TOC_Section(
 /*******/
 
 
+void RB_HTML_Generate_TOC_Entries(
+    FILE *dest_doc,
+    struct RB_header **headers,
+    int count,
+    struct RB_Part *owner,
+    char *dest_name )
+{
+  struct RB_header *header;
+  char *object_name, *label_name, *file_name;
+  int i, j;
+
+//  fprintf( dest_doc, "<h3>Table of Contents</h3>\n" );
+  fprintf( dest_doc, "<p class=\"item_name\">TABLE OF CONTENTS</p>\n" );
+  fprintf( dest_doc, "<ul class=\"toc_entries\">\n" );
+
+  for ( i = count - 1; i >= 0; i-- )
+    {
+      header = headers[i];
+
+      if ( header->htype->typeCharacter != 'h' &&
+	   !strcmp( owner->filename->name, header->owner->filename->name ) &&
+	   Find_Link( header->function_name,
+		      &object_name, &label_name,
+		      &file_name ) )
+	{
+	  for ( j = 0; j < header->no_names; j++ )
+	    {
+	      fprintf( dest_doc, "<li class=\"toc_entries\">" );
+	      RB_HTML_Generate_Link( dest_doc,
+				     dest_name,
+				     file_name,
+				     "",
+				     object_name, 0);
+	      fprintf( dest_doc, "</li>\n" );
+	    }
+	}
+    }
+
+  fprintf( dest_doc, "</ul>\n" );
+}
+
+
 void RB_HTML_Generate_TOC_2(
     FILE *dest_doc,
     struct RB_header **headers,
@@ -939,7 +981,7 @@ void RB_HTML_Generate_Doc_Start(
 /*
  * INPUTS
  *   o dest_doc  --  the output file.
- *   o src_name  --  The file or directoryname from which 
+ *   o src_name  --  The file or directoryname from which
  *                   this document is generated.
  *   o name      --  The title for this document
  *   o dest_name --  the name of the output file.
@@ -1024,16 +1066,21 @@ void RB_HTML_Generate_Doc_Start(
 
 //    HTML_Generate_Div( dest_doc, "container" );
 
-    /* Generate document title if available (Thuffir) */
-    HTML_Generate_Div( dest_doc, "logo" );
-    fprintf( dest_doc, "<a name=\"robo_top_of_doc\">" );
-    if ( document_title )
-        RB_HTML_Generate_String( dest_doc, document_title );
-    fprintf( dest_doc, "</a>\n" );
-    HTML_Generate_Div_End( dest_doc, "logo" );
-
-
-
+    /* Use user specified header if present */
+    if ( document_header )
+    {
+        fprintf ( dest_doc, document_header );
+    }
+    else
+    {
+        /* Generate document title if available (Thuffir) */
+        HTML_Generate_Div( dest_doc, "logo" );
+	fprintf( dest_doc, "<a name=\"robo_top_of_doc\">" );
+	if ( document_title )
+            RB_HTML_Generate_String( dest_doc, document_title );
+	fprintf( dest_doc, "</a>\n" );
+	HTML_Generate_Div_End( dest_doc, "logo" );
+    }
 }
 
 /******/
@@ -1056,26 +1103,35 @@ void RB_HTML_Generate_Doc_End(
 
     USE( name );
 
-
-    HTML_Generate_Div( dest_doc, "footer" );
-    /* TODO This should be done with
-     * RB_Generate_Label() 
-     */
-    if ( course_of_action.do_nogenwith )
+    /* Use user specified footer if present */
+    if ( document_footer )
     {
-        fprintf( dest_doc, "<p>Generated from %s on ", src_name );
-        RB_TimeStamp( dest_doc );
-        fprintf( dest_doc, "</p>\n" );
+        fprintf ( dest_doc, document_footer );
     }
     else
     {
-        fprintf( dest_doc,
-                 "<p>Generated from %s with <a href=\"http://www.xs4all.nl/~rfsber/Robo/robodoc.html\">ROBODoc</a> V%s on ",
-                 src_name, VERSION );
-        RB_TimeStamp( dest_doc );
-        fprintf( dest_doc, "</p>\n" );
+      HTML_Generate_Div( dest_doc, "footer" );
+
+        /* TODO This should be done with
+	 * RB_Generate_Label()
+	 */
+        if ( course_of_action.do_nogenwith )
+	{
+	    fprintf( dest_doc, "<p>Generated from %s on ", src_name );
+	    RB_TimeStamp( dest_doc );
+	    fprintf( dest_doc, "</p>\n" );
+	}
+	else
+	{
+            fprintf( dest_doc,
+		     "<p>Generated from %s with <a href=\"http://www.xs4all.nl/~rfsber/Robo/robodoc.html\">ROBODoc</a> V%s on ",
+		     src_name, VERSION );
+	    RB_TimeStamp( dest_doc );
+	    fprintf( dest_doc, "</p>\n" );
+	}
+
+	HTML_Generate_Div_End( dest_doc, "footer" );
     }
-    HTML_Generate_Div_End( dest_doc, "footer" );
 
 //    HTML_Generate_Div_End( dest_doc, "container" );
 
@@ -1206,7 +1262,7 @@ void RB_HTML_Generate_Header_Start(
 
     if ( cur_header->name && cur_header->function_name )
     {
-        fprintf( dest_doc, "<hr />\n" );
+/*        fprintf( dest_doc, "<hr />\n" ); */
         RB_HTML_Generate_Label( dest_doc, cur_header->name );
         fprintf( dest_doc, "</a><a name=\"%s\"></a><h2>",
                  cur_header->unique_name );
@@ -1327,6 +1383,110 @@ void RB_HTML_Generate_IndexMenu(
     }
 }
 
+/****f* HTML_Generator/RB_HTML_Generate_Header_IndexMenu
+ * FUNCTION
+ *   Generates a menu to jump to the header's entries.  The menu is
+ *   generated for each entry file.
+ * SYNOPSIS
+ */
+void RB_HTML_Generate_Header_IndexMenu(
+    FILE *dest_doc,
+    char *filename,
+    struct RB_Document *document,
+    struct RB_Part *owner,
+    struct RB_HeaderType *cur_type )
+    /* TODO  Use cur_type */
+/*
+ * INPUTS
+ *   * dest_doc       -- the output file.
+ *   * filename       -- the name of the output file
+ *   * document       -- the gathered documention.
+ *   * cur_headertype -- the header type that is to be highlighted.
+ ******
+ */
+{
+    struct RB_header *header;
+    char *object_name, *label_name, *file_name;
+    int i, j;
+
+    for ( i = document->no_headers - 1; i >= 0; i-- )
+    {
+        header = document->headers[i];
+
+	if ( !strcmp( owner->filename->name, header->owner->filename->name ) &&
+	     ( header->htype->typeCharacter == 'h' ||
+	       Find_Link( header->function_name,
+			  &object_name, &label_name,
+			  &file_name ) ) )
+	{
+	    for ( j = 0; j < header->no_names; j++ )
+	    {
+	        if ( header->htype->typeCharacter == 'h' )
+		{
+		    RB_HTML_Generate_Link( dest_doc,
+					   filename,
+                                           header->owner->filename->docname,
+					   NULL,
+                                           header->function_name,
+					   "menuitem" );
+		    fprintf( dest_doc, "\n" );
+		}
+		else
+		{
+	            RB_HTML_Generate_Link( dest_doc,
+					   filename,
+					   file_name,
+					   "",
+					   object_name,
+					   "menuitem" );
+		    fprintf( dest_doc, "\n" );
+		}
+	    }
+	}
+    }
+}
+
+/****f* HTML_Generator/RB_HTML_Generate_Module_IndexMenu
+ * FUNCTION
+ *   Generates a menu to jump to the different modules.  The menu is
+ *   generated for each header file.
+ * SYNOPSIS
+ */
+void RB_HTML_Generate_Module_IndexMenu(
+    FILE *dest_doc,
+    char *filename,
+    struct RB_Document *document,
+    struct RB_HeaderType *cur_type )
+    /* TODO  Use cur_type */
+/*
+ * INPUTS
+ *   * dest_doc       -- the output file.
+ *   * filename       -- the name of the output file
+ *   * document       -- the gathered documention.
+ *   * cur_headertype -- the header type that is to be highlighted.
+ ******
+ */
+{
+    struct RB_Part *i_part;
+
+    for ( i_part = document->parts; i_part != NULL; i_part = i_part->next )
+    {
+      if ( !i_part->headers ||
+	   i_part->headers[0].htype->typeCharacter != 'h' ||
+	   !strcmp(i_part->headers[0].function_name,
+		   "ROBODoc Cascading Style Sheet") )
+	    continue;
+        RB_HTML_Generate_Link( dest_doc,
+			       filename,
+			       i_part->filename->docname,
+			       NULL,
+			       i_part->headers[0].function_name,
+			       "menuitem" );
+	fprintf( dest_doc, "\n" );
+    }
+}
+
+
 /****f* HTML_Generator/RB_HTML_Generate_Index_Page
  * FUNCTION
  *   Generate a single file with a index table for headers
@@ -1362,7 +1522,7 @@ void RB_HTML_Generate_Index_Page(
     else
     {
         /* File opened, now we generate an index
-         * for the specified header type 
+         * for the specified header type
          */
         RB_HTML_Generate_Doc_Start( file,
                                     document->srcroot->name,
@@ -1712,18 +1872,23 @@ void RB_HTML_Generate_Link(
     {
         fprintf( cur_doc, "<a " );
     }
-    if ( filename && strcmp( filename, cur_name ) )
+    if ( filename && strcmp( filename, cur_name ) && labelname)
     {
         char               *r = RB_HTML_RelativeAddress( cur_name, filename );
 
         fprintf( cur_doc, "href=\"%s#%s\">", r, labelname );
         RB_HTML_Generate_String( cur_doc, linkname );
         fprintf( cur_doc, "</a>" );
-
+    }
+    else if (labelname)
+    {
+        fprintf( cur_doc, "href=\"#%s\">", labelname );
+        RB_HTML_Generate_String( cur_doc, linkname );
+        fprintf( cur_doc, "</a>" );
     }
     else
     {
-        fprintf( cur_doc, "href=\"#%s\">", labelname );
+        fprintf( cur_doc, "href=\"%s\">", filename);
         RB_HTML_Generate_String( cur_doc, linkname );
         fprintf( cur_doc, "</a>" );
     }
@@ -1748,7 +1913,7 @@ char               *RB_HTML_RelativeAddress(
  *   The following two
  *     this /sub1/sub2/sub3/f.html
  *     that /sub1/sub2/g.html
- *   result in 
+ *   result in
  *     ../g.html
  *
  *     this /sub1/f.html
